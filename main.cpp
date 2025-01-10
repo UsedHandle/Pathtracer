@@ -56,19 +56,19 @@ int main(int argc, char** argv) {
 	// eventually would get replaced with BVH with unique ptr
 	Scene cornellBox({
 		// smallpt scene except light
-		new Sphere(1e5,	dvec3( 1e5+1,40.8,81.6),	dvec3(.75,.25,.25),  dvec3(0.0)),//Left 
-		new Sphere(1e5,	dvec3(-1e5+99,40.8,81.6),	dvec3(.25,.25,.75),  dvec3(0.0)),//Right 
-		new Sphere(1e5,	dvec3( 50.,40.8, 1e5),		dvec3(.75,.75,.75),  dvec3(0.0)),//Back 
-		new Sphere(1e5,	dvec3( 50.,40.8,-1e5+170),	dvec3(0.0),			 dvec3(0.0)),//Front 
-		new Sphere(1e5,	dvec3( 50., 1e5, 81.6),		dvec3(.75,.75,.75),  dvec3(0.0)),//Bottom 
-		new Sphere(1e5,	dvec3( 50.,-1e5+81.6,81.6), dvec3(.75,.75,.75),  dvec3(0.0)),//Top 
-		new Sphere(16.5, dvec3( 27.,16.5,47),		dvec3(1.0)*.999,	 dvec3(0.0)),//Mirror 
-		new Sphere(16.5, dvec3( 73.,16.5,78),		dvec3(1.0)*.999,	 dvec3(0.0)),//Glass
+		new Sphere(1e5,  dvec3( 1e5+1,40.8,81.6),       dvec3(.75,.25,.25),  dvec3(0.0)),//Left 
+		new Sphere(1e5,  dvec3(-1e5+99,40.8,81.6),      dvec3(.25,.25,.75),  dvec3(0.0)),//Right 
+		new Sphere(1e5,  dvec3( 50.,40.8, 1e5),         dvec3(.75,.75,.75),  dvec3(0.0)),//Back 
+		new Sphere(1e5,  dvec3( 50.,40.8,-1e5+170),     dvec3(0.0),          dvec3(0.0)),//Front 
+		new Sphere(1e5,  dvec3( 50., 1e5, 81.6),        dvec3(.75,.75,.75),  dvec3(0.0)),//Bottom 
+		new Sphere(1e5,  dvec3( 50.,-1e5+81.6,81.6),    dvec3(.75,.75,.75),  dvec3(0.0)),//Top 
+		new Sphere(16.5, dvec3( 27.,16.5,47),           dvec3(1.0)*.999,     dvec3(0.0)),//Mirror 
+		new Sphere(16.5, dvec3( 73.,16.5,78),           dvec3(1.0)*.999,     dvec3(0.0)),//Glass
 	},
 	{
 		/*new Sphere(600., dvec3( 50.,681.6-.27,81.6), dvec3(1.0),dvec3(12.)) //Light */
-		/*new Sphere(5.,	dvec3( 50.,81.6-6.,81.6), dvec3(1.0), dvec3(12.)), //Light*/
-		/* Sphere(20.,	dvec3( 50.,51.6-6.,81.6), dvec3(1.0), dvec3(12.)) //Light */
+		/*new Sphere(5.,dvec3( 50.,81.6-6.,81.6), dvec3(1.0), dvec3(12.)), //Light*/
+		/* Sphere(20.,dvec3( 50.,51.6-6.,81.6), dvec3(1.0), dvec3(12.)) //Light */
 		new Triangle(dvec3( 50.,81.6-9.,81.6),dvec3( 42.,81.6-9.,76.6),dvec3( 42.,81.6-9.,81.6), dvec3(1.0), dvec3(50.)), //Light
 		new Triangle(dvec3( 50.,81.6-9.,76.6),dvec3( 42.,81.6-9.,76.6),dvec3( 50.,81.6-9.,81.6), dvec3(1.0), dvec3(50.)), //Light
 	});
