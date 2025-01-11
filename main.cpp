@@ -3,6 +3,7 @@
 #include <iterator>
 #include <iostream>
 #include <chrono>
+#include <string>
 using std::chrono::high_resolution_clock;
 
 #include <glm/glm.hpp>
