@@ -20,15 +20,10 @@ add_library(stb_image STATIC stb_image_write.c)
 add_executable(${EXE_NAME} main.cpp pathtracer.cpp ray.cpp sampler.cpp scene.cpp sphere.cpp triangle.cpp)
 
 if(MSVC)
-	target_compile_options(stb_image PRIVATE /O2)
-else()
-	target_compile_options(stb_image PRIVATE -O3)
-endif()
-
-if(MSVC)
-	target_compile_options(${EXE_NAME} PRIVATE /W4 /O2)
+	target_compile_options(${EXE_NAME} PRIVATE /W4)
 else()
 	target_compile_options(${EXE_NAME} PRIVATE -Wall -Wextra -Wshadow -Wconversion -Wpedantic -O3)
+	target_compile_options(stb_image PRIVATE -O3)
 endif()
 
 include_directories(include/)
