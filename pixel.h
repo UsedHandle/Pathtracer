@@ -9,21 +9,21 @@ struct pixel {
 };
 
 [[nodiscard]] inline
-glm::dvec3 srgbApprox(const glm::dvec3& col){
-    constexpr double inv_gamma = 1.0/2.2;
-    return glm::dvec3(
+glm::vec3 srgbApprox(const glm::vec3& col){
+    constexpr float inv_gamma = 1.0/2.2;
+    return glm::vec3(
         std::pow(col.x, inv_gamma),
         std::pow(col.y, inv_gamma),
         std::pow(col.z, inv_gamma));
 }
 
 [[nodiscard]] inline
-double luminance(const glm::dvec3& col){
-    return dot(col, glm::dvec3(0.2126, 0.7152, 0.0722));
+float luminance(const glm::vec3& col){
+    return dot(col, glm::vec3(0.2126, 0.7152, 0.0722));
 }
 
 [[nodiscard]] inline
-glm::dvec3 reinhardTMO(const glm::dvec3& col){
+glm::vec3 reinhardTMO(const glm::vec3& col){
     // this could also use the extended
     // version:
     // L*(1 + L/L_white^2)
@@ -33,12 +33,12 @@ glm::dvec3 reinhardTMO(const glm::dvec3& col){
     // L_out = L_in/(1.0 + L_in)
     // col = col * L_in/(1.0 + L_in) * 1.0/L_in
     // col = col/(1.0 + L_in)
-    const double lum = luminance(col);
+    const float lum = luminance(col);
     return col/(1.0 + lum);
 }
 
 [[nodiscard]] inline
-pixel toPixel(glm::dvec3 col){
+pixel toPixel(glm::vec3 col){
     
     col = reinhardTMO(col);
     col = srgbApprox(col);

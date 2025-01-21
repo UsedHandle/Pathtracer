@@ -20,22 +20,22 @@ Scene::~Scene(){
 }
 
 bool Scene::findIntersection(
-		const Ray& ray, double& t,
+		const Ray& ray, float& t,
 		const Shape*& shapeptr) const
 {
 	t = MAX_T;
 	for(uint32_t i = 0; i < objects.size(); ++i){
-		const double temp_t = objects[i]->intersect(ray);
+		const float temp_t = objects[i]->intersect(ray);
 		if(temp_t < t){ t = temp_t; shapeptr = objects[i]; }
 	}
 
 	return t < MAX_T;
 }
 
-bool Scene::visibility(const Ray& ray, double t) const {
+bool Scene::visibility(const Ray& ray, float t) const {
 	
 	for(uint32_t i = 0; i < objects.size(); ++i){
-		const double temp_t = objects[i]->intersect(ray);
+		const float temp_t = objects[i]->intersect(ray);
 		if(temp_t + EPS < t) return false;
 	}
 

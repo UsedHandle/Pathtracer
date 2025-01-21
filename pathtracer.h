@@ -12,10 +12,10 @@ class Pathtracer{
     // used in radiance()
     // prevents re-initialization of arrays
     // when radiance() is called
-    std::unique_ptr<glm::dvec3[]> direct;
-    std::unique_ptr<glm::dvec3[]> emission;
-    std::unique_ptr<glm::dvec3[]> col;
-    std::unique_ptr<double[]> LiWeight;
+    std::unique_ptr<glm::vec3[]> direct;
+    std::unique_ptr<glm::vec3[]> emission;
+    std::unique_ptr<glm::vec3[]> col;
+    std::unique_ptr<float[]> LiWeight;
 public:
     Sampler sampler;
     uint32_t numBounces{}; 
@@ -29,6 +29,6 @@ public:
     Pathtracer& operator=(const Pathtracer& b) = default;
     Pathtracer& operator=(Pathtracer&& b) noexcept = default;
 
-    glm::dvec3 radiance(Ray indirectRay, const Scene* const scene);
+    glm::vec3 radiance(Ray indirectRay, const Scene* const scene);
 
 };
