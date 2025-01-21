@@ -30,12 +30,15 @@ struct Sampler {
 		return state;
 	}
 
-	[[nodiscard]] double uniform_dist();
+	[[nodiscard]] float uniform_dist();
 
 	template<std::integral T>
 	[[nodiscard]] T randInt(T min, T max){
-		double rand_in_range = uniform_dist() * static_cast<double>(max-min+1);
-		return static_cast<T>(rand_in_range) + min; 
+		const T size = max-min+1;
+		const T rand = static_cast<T>(uniform_dist()*static_cast<float>(size));
+		// floating point inaccuracies can lead to rand being equal to the size
+		const T out = std::min<T>(rand, size-1);
+		return static_cast<T>(out) + min; 
 	}
  
 	[[nodiscard]] glm::vec3 uniHemisphere();

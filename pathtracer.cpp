@@ -84,11 +84,11 @@ glm::vec3 Pathtracer::radiance(
 		// last check makes sure the pdf is not zero for example when a point is sampled
 		// on a triangle from the same triangle
 		if(scene->visibility( directRay, directDist ) && light_cos_theta > EPS){
-			const float surfaceArea	 =	sampleLight->m_area;
-			const float R2			 =	directDist*directDist;
-			const float nee_pdfA = 1./(surfaceArea);
-			const float nee_pdfw = R2/(light_cos_theta) * nee_pdfA;	   
-			const float cos_theta = std::abs(dot(directRay.D, w));
+			const float surfaceArea	 =      sampleLight->m_area;
+			const float R2           =      directDist*directDist;
+			const float nee_pdfA     =      1.f/(surfaceArea);
+			const float nee_pdfw     =      R2/(light_cos_theta) * nee_pdfA;	   
+			const float cos_theta    =      std::abs(dot(directRay.D, w));
 
 			const vec3 BRDF = obj->m_col/PI;
 			const vec3 light = sampleLight->m_emis;
@@ -98,7 +98,7 @@ glm::vec3 Pathtracer::radiance(
 			const float cosprod = std::abs(cos_theta*light_cos_theta);
 
 			direct[depth] =
-				BRDF * light * cosprod/R2  * 1.0/nee_pdfA;
+				BRDF * light * cosprod/R2  * 1.f/nee_pdfA;
 		}
 
 		brdf_pdf = next_brdf_pdf;
@@ -108,7 +108,7 @@ glm::vec3 Pathtracer::radiance(
 
 	// uint goes to its upper limit when it goes below 0
 	for(uint32_t i = numBounces-1; i < numBounces; --i){
-		light_out = (1.-LiWeight[i])*emission[i] + LiWeight[i]*direct[i] + col[i]*light_out;
+		light_out = (1.f-LiWeight[i])*emission[i] + LiWeight[i]*direct[i] + col[i]*light_out;
 		/*light_out = (emission[i] + col[i]*light_out);*/
 	}
 	return light_out;

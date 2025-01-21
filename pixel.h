@@ -10,7 +10,7 @@ struct pixel {
 
 [[nodiscard]] inline
 glm::vec3 srgbApprox(const glm::vec3& col){
-    constexpr float inv_gamma = 1.0/2.2;
+    constexpr float inv_gamma = 1.f/2.2f;
     return glm::vec3(
         std::pow(col.x, inv_gamma),
         std::pow(col.y, inv_gamma),
@@ -34,7 +34,7 @@ glm::vec3 reinhardTMO(const glm::vec3& col){
     // col = col * L_in/(1.0 + L_in) * 1.0/L_in
     // col = col/(1.0 + L_in)
     const float lum = luminance(col);
-    return col/(1.0 + lum);
+    return col/(1.f + lum);
 }
 
 [[nodiscard]] inline

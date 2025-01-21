@@ -5,7 +5,7 @@ Sphere::Sphere(float r,
                glm::vec3 col,
                glm::vec3 emis): m_r(r), m_pos(pos)
 {
-	m_area=4.0*PI*r*r;
+	m_area=4.f*PI*r*r;
 	m_pos=pos;
 	m_col=col;
 	m_emis=emis;
@@ -18,7 +18,7 @@ Sphere::normal(const glm::vec3& point, const glm::vec3& dir) const {
 	// negate the normal if D is facing 
 	// at the same direction at the normal
 	// (when D is inside the sphere)
-	return dot(norm, dir) < 0.0 ? norm : -norm;
+	return dot(norm, dir) < 0.f ? norm : -norm;
 }
 
 float Sphere::intersect(const Ray& ray) const {
@@ -28,7 +28,7 @@ float Sphere::intersect(const Ray& ray) const {
 	const float b = dot(ray.D, negative_op);
 
 	float discrim = b*b - dot(negative_op, negative_op) + m_r*m_r;
-	if(discrim < 0.0) return MAX_T;
+	if(discrim < 0.f) return MAX_T;
 	else discrim = std::sqrt(discrim);
 
 	float root;
@@ -39,8 +39,8 @@ float Sphere::intersect(const Ray& ray) const {
 [[nodiscard]] glm::vec3
 Sphere::sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const
 {
-	const float phi = 2.0 * PI * zeta1;
-	const float theta	 = std::acos(1.0 - 2.0 * zeta2);
+	const float phi = 2.f * PI * zeta1;
+	const float theta = std::acos(1.f - 2.f * zeta2);
 	const float sin_theta = std::sin(theta);
    
 	const glm::vec3 point = glm::vec3(
