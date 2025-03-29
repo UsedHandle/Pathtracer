@@ -3,9 +3,7 @@
 ## build (CMake which fetches assimp and glm)
 For mac or linux:
 ```
-mkdir build
-cd build
-cmake .. -D CMAKE_POLICY_VERSION_MINIMUM=3.5
+cmake .
 make
 ```
 On windows, ```make``` can be replaced with compilation through Visual Studio after setting better as the startup project
