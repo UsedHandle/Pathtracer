@@ -25,6 +25,10 @@ using glm::vec2;
 int main(int argc, char** argv) {
 	uint32_t numSamples = 200;
 	uint32_t numBounces = 2;
+
+	uint32_t pixels_width = 256;
+	uint32_t pixels_height = 256;
+
 	if(argc > 1){
 		int val = std::stoi(argv[1]);
 		if(val > 0)
@@ -36,26 +40,15 @@ int main(int argc, char** argv) {
 		if(val >= 0)
 			numBounces = static_cast<uint32_t>(std::stoi(argv[2]));
 	}
-	
-#define MID_GRAPHICS
-#ifdef HIGH_GRAPHICS
-	const uint32_t pixels_width   =  1024;
-	const uint32_t pixels_height  =  768;
-#endif
-#ifdef VGA_GRAPHICS
-	const uint32_t pixels_width  =	640;
-	const uint32_t pixels_height =	480;
-#endif
+	if (argc > 4) {
+		int val1 = std::stoi(argv[3]);
+		int val2 = std::stoi(argv[4]);
+		if(val1 > 0 && val2 > 0) {
+			pixels_width = val1;
+			pixels_height = val2;
+		}
 
-#ifdef MID_GRAPHICS
-	const uint32_t pixels_width   =  256;
-	const uint32_t pixels_height  =  256;
-#endif
-
-#ifdef LOW_GRAPHICS
-	const uint32_t pixels_width   =  100;
-	const uint32_t pixels_height  =  100;
-#endif
+	}
 
 	Pathtracer tracer(Sampler(1835), numBounces);
 	glm::mat4 trans(1.0);
@@ -64,8 +57,8 @@ int main(int argc, char** argv) {
 
 	trans = glm::rotate(trans, -(float)PI/2.f, glm::vec3(1.,0.,0.));
 	trans = glm::scale(trans, glm::vec3(.25f));
-	Model model("stanforddragon.stl", glm::vec3(0.75, 0.5, 0.25), glm::vec3(0.f), trans);
-	//Model model("box.glb", glm::vec3(0.75), glm::vec3(0.f), trans);
+	Model model("assets/stanforddragon.stl", glm::vec3(0.75, 0.5, 0.25), glm::vec3(0.f), trans);
+	//Model model("assets/box.glb", glm::vec3(0.75), glm::vec3(0.f), trans);
 
 	std::vector<Shape*> objectList = {
 		// smallpt scene except light and walls with triangles instead of spheres
@@ -109,13 +102,13 @@ int main(int argc, char** argv) {
 	Scene cornellBox(objectList, lightList);
 
 
-	pixel pixels[pixels_height][pixels_width];
+	std::vector<std::vector<pixel>> pixels(pixels_height, std::vector<pixel>(pixels_width));
 
 	// std::tan() is not constexpr
 	constexpr float FOV = 75.f;
 	const float transVal =  std::tan(glm::radians(FOV/2.f));
 
-	constexpr float aspect_ratio =
+	float aspect_ratio =
 		float(pixels_width)/float(pixels_height);
 
 	/* // Ray ray(vec3(0.0), vec3(0.0, 0.0, 1.0)); */
@@ -164,17 +157,6 @@ int main(int argc, char** argv) {
 
 
 			pixels[i][j] = toPixel(col);
-			/*
-			pixels[i][j] = toPixel(col);
-			float t;
-			const Shape* shape;
-			if (cornellBox.findIntersection(ray, t, shape))
-				col = shape->m_col;
-			pixels[i][j] = pixel{
-				static_cast<unsigned char>(col.x * 255.0),
-				static_cast<unsigned char>(col.y * 255.0),
-				static_cast<unsigned char>(col.z * 255.0)
-			};*/
 		}
 	}
   
@@ -186,6 +168,6 @@ int main(int argc, char** argv) {
 	
 	stbi_write_png("outimage.png",
 	               pixels_width, pixels_height, 3,
-	               pixels, pixels_width*sizeof(pixel));
+	               &pixels.front(), pixels_width * sizeof(pixel));
 
 }
