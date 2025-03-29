@@ -1,5 +1,22 @@
 #include "model.h"
 
+Model::Model(std::string filename, glm::vec3 col,
+	glm::vec3 emis, glm::mat4 trans) {
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(filename.c_str(), ASSIMP_LOAD_FLAGS);
+
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+		fprintf(stderr, "Assimp: %s\n", importer.GetErrorString());
+		exit(EXIT_FAILURE);
+	}
+
+	m_meshes.resize(scene->mNumMeshes);
+
+	processNode(scene->mRootNode, glmToAssimp(trans));
+	populateMeshesAndBuffers(scene, col, emis);
+}
+
 void Model::processNode(aiNode *node, aiMatrix4x4 accumTrans){
 	accumTrans = node->mTransformation*accumTrans;
 	for(unsigned int i = 0; i < node->mNumChildren; i++)
@@ -12,7 +29,8 @@ void Model::processNode(aiNode *node, aiMatrix4x4 accumTrans){
 	}
 }
 
-void Model::populateMeshesAndBuffers(const aiScene *scene)
+void Model::populateMeshesAndBuffers(const aiScene *scene,
+	glm::vec3 col, glm::vec3 emis)
 {
 	// copy data into mesh array and collect info
 	unsigned int totalNumFaces  = 0;
@@ -36,8 +54,6 @@ void Model::populateMeshesAndBuffers(const aiScene *scene)
 			const glm::vec3 p1(objp1);
 			const glm::vec3 p2(objp2);
 			const glm::vec3 p3(objp3);
-			const glm::vec3 col(.75, .75, .75);
-			const glm::vec3 emis(0.,0.,0.);
 			m_triangles[m_meshes[i].baseFace + (std::size_t)facei] = Triangle(p1, p2, p3, col, emis);
 		}
 	}

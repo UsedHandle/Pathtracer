@@ -92,7 +92,7 @@ std::shared_ptr<BVHNode> BVH::createNode(size_t start, size_t end) {
 	return std::make_shared<BVHNode>(bound, createNode(start, mid),
 		createNode(mid, end), axis, start, 0);
 }
-#include <print>
+
 bool BVH::findIntersection(
 	const Ray& ray,
 	float& t,
@@ -104,7 +104,6 @@ bool BVH::findIntersection(
 	stack.at(stackIndex++) = root;
 	while (stackIndex != 0) {
 		--stackIndex;
-		//std::println("{} {}", stackIndex, (int)stack[stackIndex].get());
 		const std::shared_ptr<BVHNode> node = stack[stackIndex];
 		const float node_t = stack.at(stackIndex)->bound.intersect(ray);
 		// node hit
@@ -112,7 +111,6 @@ bool BVH::findIntersection(
 			if (node->nShapes == 0) {
 				stack[stackIndex++] = node->children[0];
 				stack[stackIndex++] = node->children[1];
-				//std::println("2 children {}", stackIndex);
 				continue;
 			}
 
@@ -125,15 +123,18 @@ bool BVH::findIntersection(
 					t = shape_t;
 				}
 			}
-			//std::println("leaf node {}", stackIndex);
 
 		}
-		//else std::println("node not hit");
 	}
-	std::println("\n");
 	return t < MAX_T;
 }
 
+bool BVH::visibility(const Ray& ray, float t) const {
+	float temp_t;
+	const Shape* shape = nullptr;
+	findIntersection(ray, temp_t, shape);
+	return t > temp_t + EPS;
+}
 
 BVHNode::BVHNode(Bound newBound, size_t firstShape) :
 	bound(newBound), firstShape(firstShape), nShapes(1)

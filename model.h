@@ -19,28 +19,12 @@ struct Mesh {
 	glm::mat4 transform;
 };
 
-#include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
-
 struct Model {
 	std::vector<Triangle> m_triangles;
 
 	std::vector<Mesh> m_meshes;	
-	Model(std::string filename, glm::mat4 trans = glm::mat4(1.0)){
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(filename.c_str(), ASSIMP_LOAD_FLAGS);
-		
-
-		if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){
-			fprintf(stderr, "Assimp: %s\n", importer.GetErrorString());
-			exit(EXIT_FAILURE);
-		}
-		
-		m_meshes.resize(scene->mNumMeshes);
-		
-		processNode(scene->mRootNode, glmToAssimp(trans));
-		populateMeshesAndBuffers(scene);
-	}
+	Model(std::string filename, glm::vec3 col = glm::vec3(.75f),
+		glm::vec3 emis = glm::vec3(0.f), glm::mat4 trans = glm::mat4(1.f));
 	
 	static inline aiMatrix4x4 glmToAssimp(const glm::mat4& b){
 		return aiMatrix4x4(b[0][0], b[1][0], b[2][0], b[3][0],
@@ -50,7 +34,5 @@ struct Model {
 	}
 
 	void processNode(aiNode* node, aiMatrix4x4 accumTrans = aiMatrix4x4());
-	void populateMeshesAndBuffers(const aiScene* scene);
-
-
+	void populateMeshesAndBuffers(const aiScene* scene, glm::vec3 col, glm::vec3 emis);
 };
