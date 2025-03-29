@@ -10,7 +10,8 @@ public:
 
 	glm::vec3 m_norm;
 	
-	Triangle(){ }
+	Triangle() : m_p1(glm::vec3(0.f)), m_p2(glm::vec3(0.f)),
+		m_p3(glm::vec3(0.f)), m_norm(glm::vec3(0.f)){ }
 	Triangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3,
 	         glm::vec3 col, glm::vec3 emis);
 

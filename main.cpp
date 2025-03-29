@@ -59,14 +59,16 @@ int main(int argc, char** argv) {
 
 	Pathtracer tracer(Sampler(1835), numBounces);
 	glm::mat4 trans(1.0);
-	trans = glm::translate(trans, glm::vec3(50., 20., 100.));
-	trans = glm::rotate(trans, (float)PI/7.f, glm::vec3(0.,1.,0.));
-	trans = glm::scale(trans, glm::vec3(10.f));
-	Model model("box.glb", glm::vec3(0.75), glm::vec3(0.f), trans);
+	trans = glm::translate(trans, glm::vec3(50., 40., 70.));
+	trans = glm::rotate(trans, (float)PI / 7.f, glm::vec3(0., 1., 0.));
 
-	// eventually would get replaced with BVH with unique ptr
-	Scene cornellBox({
-		// smallpt scene except light with triangles instead of spheres
+	trans = glm::rotate(trans, -(float)PI/2.f, glm::vec3(1.,0.,0.));
+	trans = glm::scale(trans, glm::vec3(.25f));
+	Model model("stanforddragon.stl", glm::vec3(0.75, 0.5, 0.25), glm::vec3(0.f), trans);
+	//Model model("box.glb", glm::vec3(0.75), glm::vec3(0.f), trans);
+
+	std::vector<Shape*> objectList = {
+		// smallpt scene except light and walls with triangles instead of spheres
 		new Triangle(vec3(1.,0.,0.),vec3(1.,81.6,0.),vec3(1.,0.,170.),vec3(.75,.25,.25),vec3(0.)),   // Left
 		new Triangle(vec3(1.,81.6,170.),vec3(1.,0.,170.),vec3(1, 81.6,0.0),vec3(.75,.25,.25),vec3(0.)), // Left
 		new Triangle(vec3(99.,0.0,0.0),vec3(99.,81.6,0.0),vec3(99.,0.,170.),vec3(.25,.25,.75),vec3(0.)),   // Right
@@ -87,20 +89,25 @@ int main(int argc, char** argv) {
 		/*new Sphere(1e5,  vec3( 50.,-1e5+81.6,81.6),    vec3(.75,.75,.75),  vec3(0.0)),//Top */
 		new Sphere(16.5, vec3( 27.,16.5,47),           vec3(1.0)*.999f,     vec3(0.0)),//Mirror 
 		new Sphere(16.5, vec3( 73.,16.5,78),           vec3(1.0)*.999f,     vec3(0.0)),//Glass
-	},
-	{
+	};
+	objectList.reserve(objectList.size() + model.m_triangles.size());
+	for (const Triangle& Tri : model.m_triangles) {
+		objectList.push_back(new Triangle(Tri));
+		//std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
+	}
+
+
+
+	std::vector<Shape*> lightList = {
 		/*new Sphere(600., vec3( 50.,681.6-.27,81.6), vec3(1.0),vec3(12.)) //Light */
 		/*new Sphere(5.,vec3( 50.,81.6-6.,81.6), vec3(1.0), vec3(12.)), //Light*/
 		/* Sphere(20.,vec3( 50.,51.6-6.,81.6), vec3(1.0), vec3(12.)) //Light */
-		new Triangle(vec3( 50.,81.6-9.,81.6),vec3( 42.,81.6-9.,76.6),vec3( 42.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
-		new Triangle(vec3( 50.,81.6-9.,76.6),vec3( 42.,81.6-9.,76.6),vec3( 50.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
-	});
-	/*
-	for(auto& Tri : model.m_triangles){
-		cornellBox.objects.insert(cornellBox.objects.begin()+cornellBox.firstLightIndex, &Tri);
-		std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
-		//cornellBox.firstLightIndex++;
-	}*/
+		new Triangle(vec3(50.,81.6 - 9.,81.6),vec3(42.,81.6 - 9.,76.6),vec3(42.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
+		new Triangle(vec3(50.,81.6 - 9.,76.6),vec3(42.,81.6 - 9.,76.6),vec3(50.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
+	};
+
+	Scene cornellBox(objectList, lightList);
+
 
 	pixel pixels[pixels_height][pixels_width];
 
@@ -155,7 +162,20 @@ int main(int argc, char** argv) {
 			
 
 
+
 			pixels[i][j] = toPixel(col);
+			
+			/*
+			pixels[i][j] = toPixel(col);
+			float t;
+			const Shape* shape;
+			if (cornellBox.findIntersection(ray, t, shape))
+				col = shape->m_col;
+			pixels[i][j] = pixel{
+				static_cast<unsigned char>(col.x * 255.0),
+				static_cast<unsigned char>(col.y * 255.0),
+				static_cast<unsigned char>(col.z * 255.0)
+			};*/
 		}
 	}
   
