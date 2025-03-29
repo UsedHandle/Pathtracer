@@ -9,6 +9,10 @@ struct Ray {
 
 	Ray(glm::vec3 O_in, glm::vec3 D_in):
 		O(O_in), D(D_in) {}
+	Ray(const Ray& b) = default;
+	Ray(Ray&& b) noexcept = default;
+	Ray& operator=(const Ray& b) = default;
+	Ray& operator=(Ray&& b) noexcept = default;
 };
 
 glm::mat3 orthonormalZ(const glm::vec3& z);

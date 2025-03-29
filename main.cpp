@@ -19,7 +19,8 @@ using glm::vec2;
 
 #include "stb_image_write.h"
 
-#include "bvh.h"
+#include "triangle.h"
+#include "sphere.h"
 
 int main(int argc, char** argv) {
 	uint32_t numSamples = 200;
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
 	trans = glm::translate(trans, glm::vec3(50., 20., 100.));
 	trans = glm::rotate(trans, (float)PI/7.f, glm::vec3(0.,1.,0.));
 	trans = glm::scale(trans, glm::vec3(10.f));
-	Model model("box.glb", trans);
+	Model model("box.glb", glm::vec3(0.75), glm::vec3(0.f), trans);
 
 	// eventually would get replaced with BVH with unique ptr
 	Scene cornellBox({
@@ -94,12 +95,12 @@ int main(int argc, char** argv) {
 		new Triangle(vec3( 50.,81.6-9.,81.6),vec3( 42.,81.6-9.,76.6),vec3( 42.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 		new Triangle(vec3( 50.,81.6-9.,76.6),vec3( 42.,81.6-9.,76.6),vec3( 50.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 	});
-	Bound box(glm::vec3(30.f, 10.f, 90.f), glm::vec3(60.f, 40.f, 110.f));
+	/*
 	for(auto& Tri : model.m_triangles){
 		cornellBox.objects.insert(cornellBox.objects.begin()+cornellBox.firstLightIndex, &Tri);
 		std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
-		cornellBox.firstLightIndex++;
-	}
+		//cornellBox.firstLightIndex++;
+	}*/
 
 	pixel pixels[pixels_height][pixels_width];
 
@@ -122,29 +123,7 @@ int main(int argc, char** argv) {
 	Ray ray(vec3(50.0, 50.0, 150.0), D);
    
 	auto start = high_resolution_clock::now();
-	BVH bvh(std::vector<Shape*>{
-		// smallpt scene except light with triangles instead of spheres
-		new Triangle(vec3(1., 0., 0.), vec3(1., 81.6, 0.), vec3(1., 0., 170.), vec3(.75, .25, .25), vec3(0.)),   // Left
-			new Triangle(vec3(1., 81.6, 170.), vec3(1., 0., 170.), vec3(1, 81.6, 0.0), vec3(.75, .25, .25), vec3(0.)), // Left
-			new Triangle(vec3(99., 0.0, 0.0), vec3(99., 81.6, 0.0), vec3(99., 0., 170.), vec3(.25, .25, .75), vec3(0.)),   // Right
-			new Triangle(vec3(99., 81.6, 170.), vec3(99., 0., 170.), vec3(99., 81.6, 0.0), vec3(.25, .25, .75), vec3(0.)), // Right
-			new Triangle(vec3(1., 0., 0.), vec3(1., 81.6, 0.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)),   // Back
-			new Triangle(vec3(99., 81.6, 0.), vec3(99., 0., 0.), vec3(1., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)), // Back
-			new Triangle(vec3(1., 0., 170.), vec3(1., 81.6, 170.), vec3(99., 0., 170.), vec3(0., 0., 0.), vec3(0.)),   // Front
-			new Triangle(vec3(99., 81.6, 170.), vec3(99., 0., 170.), vec3(1., 81.6, 170.), vec3(0., 0., 0.), vec3(0.)), // Front
-			new Triangle(vec3(1., 0., 0.), vec3(1., 0., 170.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)),   // Bottom
-			new Triangle(vec3(99., 0., 170.), vec3(1., 0., 170.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)), // Bottom
-			new Triangle(vec3(1., 81.6, 0.), vec3(1., 81.6, 170.), vec3(99., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)),   // Top
-			new Triangle(vec3(99., 81.6, 170.), vec3(1., 81.6, 170.), vec3(99., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)), // Top
-			/*new Sphere(1e5,  vec3( 1e5+1,40.8,81.6),       vec3(.75,.25,.25),  vec3(0.0)),//Left */
-			/*new Sphere(1e5,  vec3(-1e5+99,40.8,81.6),      vec3(.25,.25,.75),  vec3(0.0)),//Right */
-			/*new Sphere(1e5,  vec3( 50.,40.8, 1e5),         vec3(.75,.75,.75),  vec3(0.0)),//Back */
-			/*new Sphere(1e5,  vec3( 50.,40.8,-1e5+170),     vec3(0.0),          vec3(0.0)),//Front */
-			/*new Sphere(1e5,  vec3( 50., 1e5, 81.6),        vec3(.75,.75,.75),  vec3(0.0)),//Bottom */
-			/*new Sphere(1e5,  vec3( 50.,-1e5+81.6,81.6),    vec3(.75,.75,.75),  vec3(0.0)),//Top */
-			new Sphere(16.5, vec3(27., 16.5, 47), vec3(1.0) * .999f, vec3(0.0)),//Mirror 
-			new Sphere(16.5, vec3(73., 16.5, 78), vec3(1.0) * .999f, vec3(0.0)),//Glass
-	});
+
 	for(uint32_t i = 0; i < pixels_height; ++i){
 		// does not mess with stdout, so there
 		// is no flushing of text like log info

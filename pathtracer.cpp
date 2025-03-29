@@ -62,13 +62,13 @@ glm::vec3 Pathtracer::radiance(
 		float directDist;
 		
 		// no light edge case
-		if(scene->firstLightIndex == scene->objects.size()){
+		if(scene->lights.size() == 0){
 			brdf_pdf = next_brdf_pdf;
 			break;
 		}
 
 		std::size_t randLightIndex =
-			sampler.randInt(scene->firstLightIndex, scene->objects.size()-1);
+			sampler.randInt((size_t)0, scene->lights.size()-1);
 		const Shape* const sampleLight = scene->objects[randLightIndex];
 		vec3 point = sampleLight->sampleSurface(
 				directRay, directDist,

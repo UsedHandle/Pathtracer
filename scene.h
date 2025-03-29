@@ -6,18 +6,17 @@
 
 #include "constants.h"
 #include "shape.h"
-#include "sphere.h"
-#include "triangle.h"
 #include "ray.h"
-
+#include "bvh.h"
 
 class Scene {
+	BVH bvh;
 public:
 	std::vector<Shape*> objects;
-	std::size_t firstLightIndex;
+	std::vector<Shape*> lights;
 
-	Scene(std::initializer_list<Shape*> objList,
-		std::initializer_list<Shape*> lightList);
+	Scene(const std::initializer_list<Shape*>& objList,
+		const std::initializer_list<Shape*>& lightList);
 
 
 	Scene(const Scene& b) = default;
@@ -27,10 +26,14 @@ public:
 
 	~Scene();
 
-	bool findIntersection(
-			const Ray& ray,
-			float& t,
-			const Shape*& shapeptr) const;
+	inline bool findIntersection(
+		const Ray& ray,
+		float& t,
+		const Shape*& shapeptr) const {
+		return bvh.findIntersection(ray, t, shapeptr);
+	}
 
-	bool visibility(const Ray& ray, float t) const;
+	inline bool visibility(const Ray& ray, float t) const {
+		return bvh.visibility(ray, t);
+	}
 };

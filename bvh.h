@@ -20,6 +20,7 @@ struct BVHNode {
 	size_t firstShape, nShapes;
 
 	BVHNode() = default;
+
 	BVHNode(Bound newBound, size_t firstShape);
 	BVHNode(Bound newBound, size_t firstShape, size_t nShapes);
 	BVHNode(Bound newBound, std::shared_ptr<BVHNode> c0, std::shared_ptr<BVHNode> c1,
@@ -35,9 +36,16 @@ class BVH{
 	std::shared_ptr<BVHNode> createNode(size_t start, size_t end);
 public:
 	BVH(const std::vector<Shape*>& shapeList);
+	BVH() = default;
+	BVH(const BVH& b) = default;
+	BVH(BVH&& b) noexcept = default;
+	BVH& operator=(const BVH& b) = default;
+	BVH& operator=(BVH&& b) noexcept = default;
 
 	bool findIntersection(
 		const Ray& ray,
 		float& t,
 		const Shape*& shapeptr) const;
+
+	bool visibility(const Ray& ray, float t) const;
 };
