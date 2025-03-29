@@ -27,16 +27,15 @@ struct Sampler {
 		state ^= state << 5;
 	}
 
-	[[nodiscard]] inline
-	uint32_t getNextState(){
+	inline uint32_t getNextState(){
 		nextState();
 		return state;
 	}
 
-	[[nodiscard]] float uniform_dist();
+	float uniform_dist();
 
 	template<std::integral T>
-	[[nodiscard]] T randInt(T min, T max){
+	T randInt(T min, T max){
 		const T size = max-min+1;
 		const T rand = static_cast<T>(uniform_dist()*static_cast<float>(size));
 		// floating point inaccuracies can lead to rand being equal to the size
@@ -44,6 +43,6 @@ struct Sampler {
 		return static_cast<T>(out) + min; 
 	}
  
-	[[nodiscard]] glm::vec3 uniHemisphere();
-	[[nodiscard]] glm::vec3 cosHemisphere();
+	glm::vec3 uniHemisphere();
+	glm::vec3 cosHemisphere();
 };

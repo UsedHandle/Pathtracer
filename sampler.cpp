@@ -2,7 +2,7 @@
 #include "constants.h"
 
 
-[[nodiscard]] float Sampler::uniform_dist(){
+float Sampler::uniform_dist(){
 	constexpr float INV_UINT32_MAX =
 		1.f/static_cast<float>(UINT32_MAX);
    
@@ -10,7 +10,7 @@
 		static_cast<float>(getNextState()) * INV_UINT32_MAX;
 }
 
-[[nodiscard]]
+
 glm::vec3 Sampler::uniHemisphere(){
 	const float cos_theta = uniform_dist();
 	// from 0 to PI sin(theta) = sqrt(1 - cos(theta)^2)
@@ -26,7 +26,7 @@ glm::vec3 Sampler::uniHemisphere(){
 	);
 }
 
-[[nodiscard]]
+
 glm::vec3 Sampler::cosHemisphere(){
 	// samples disk then projects onto hemisphere
 	const float phi = 2.f*PI*uniform_dist();
