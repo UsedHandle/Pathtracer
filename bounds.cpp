@@ -19,4 +19,3 @@ float Bound::intersect(const Ray& ray) const {
 	}
 	return (t0) > MIN_T ? t0 : t1;
 }
-

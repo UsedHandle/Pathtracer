@@ -19,7 +19,7 @@ using glm::vec2;
 
 #include "stb_image_write.h"
 
-#include "bounds.h"
+#include "bvh.h"
 
 int main(int argc, char** argv) {
 	uint32_t numSamples = 200;
@@ -116,16 +116,38 @@ int main(int argc, char** argv) {
 	vec3 D    =    vec3( 0.f,  0.f,  1.f);
 
 	D          =  rotateY(D,      glm::radians(180.f));
-	Up         =  rotateY(Up,     glm::radians(180.f));
+	//Up         =  rotateY(Up,     glm::radians(180.f));
 	Left       =  rotateY(Left,   glm::radians(180.f));
 	
 	Ray ray(vec3(50.0, 50.0, 150.0), D);
    
 	auto start = high_resolution_clock::now();
-	
+	BVH bvh(std::vector<Shape*>{
+		// smallpt scene except light with triangles instead of spheres
+		new Triangle(vec3(1., 0., 0.), vec3(1., 81.6, 0.), vec3(1., 0., 170.), vec3(.75, .25, .25), vec3(0.)),   // Left
+			new Triangle(vec3(1., 81.6, 170.), vec3(1., 0., 170.), vec3(1, 81.6, 0.0), vec3(.75, .25, .25), vec3(0.)), // Left
+			new Triangle(vec3(99., 0.0, 0.0), vec3(99., 81.6, 0.0), vec3(99., 0., 170.), vec3(.25, .25, .75), vec3(0.)),   // Right
+			new Triangle(vec3(99., 81.6, 170.), vec3(99., 0., 170.), vec3(99., 81.6, 0.0), vec3(.25, .25, .75), vec3(0.)), // Right
+			new Triangle(vec3(1., 0., 0.), vec3(1., 81.6, 0.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)),   // Back
+			new Triangle(vec3(99., 81.6, 0.), vec3(99., 0., 0.), vec3(1., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)), // Back
+			new Triangle(vec3(1., 0., 170.), vec3(1., 81.6, 170.), vec3(99., 0., 170.), vec3(0., 0., 0.), vec3(0.)),   // Front
+			new Triangle(vec3(99., 81.6, 170.), vec3(99., 0., 170.), vec3(1., 81.6, 170.), vec3(0., 0., 0.), vec3(0.)), // Front
+			new Triangle(vec3(1., 0., 0.), vec3(1., 0., 170.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)),   // Bottom
+			new Triangle(vec3(99., 0., 170.), vec3(1., 0., 170.), vec3(99., 0., 0.), vec3(.75, .75, .75), vec3(0.)), // Bottom
+			new Triangle(vec3(1., 81.6, 0.), vec3(1., 81.6, 170.), vec3(99., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)),   // Top
+			new Triangle(vec3(99., 81.6, 170.), vec3(1., 81.6, 170.), vec3(99., 81.6, 0.), vec3(.75, .75, .75), vec3(0.)), // Top
+			/*new Sphere(1e5,  vec3( 1e5+1,40.8,81.6),       vec3(.75,.25,.25),  vec3(0.0)),//Left */
+			/*new Sphere(1e5,  vec3(-1e5+99,40.8,81.6),      vec3(.25,.25,.75),  vec3(0.0)),//Right */
+			/*new Sphere(1e5,  vec3( 50.,40.8, 1e5),         vec3(.75,.75,.75),  vec3(0.0)),//Back */
+			/*new Sphere(1e5,  vec3( 50.,40.8,-1e5+170),     vec3(0.0),          vec3(0.0)),//Front */
+			/*new Sphere(1e5,  vec3( 50., 1e5, 81.6),        vec3(.75,.75,.75),  vec3(0.0)),//Bottom */
+			/*new Sphere(1e5,  vec3( 50.,-1e5+81.6,81.6),    vec3(.75,.75,.75),  vec3(0.0)),//Top */
+			new Sphere(16.5, vec3(27., 16.5, 47), vec3(1.0) * .999f, vec3(0.0)),//Mirror 
+			new Sphere(16.5, vec3(73., 16.5, 78), vec3(1.0) * .999f, vec3(0.0)),//Glass
+	});
 	for(uint32_t i = 0; i < pixels_height; ++i){
-		// does not mess with stdout so there
-		// is no flushing text like log info
+		// does not mess with stdout, so there
+		// is no flushing of text like log info
 		fprintf(stderr, "\rRendering... %.1f%%",100.0 *
 				static_cast<float>((i+1)*pixels_width)/
 				static_cast<float>(pixels_width*pixels_height));
@@ -152,7 +174,8 @@ int main(int argc, char** argv) {
 
 			col *= 1.f/static_cast<float>(numSamples);
 			
-			
+
+
 			pixels[i][j] = toPixel(col);
 		}
 	}

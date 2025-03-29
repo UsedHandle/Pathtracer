@@ -1,16 +1,43 @@
 #pragma once
 
 #include <vector>
-#include <shape.h>
+#include <memory>
+#include <algorithm>
 
+#include "shape.h"
 #include "bounds.h"
 
-struct BVH{
-	std::vector<Shape> shapes;
+struct ShapeBound {
+	Bound bound;
+	glm::vec3 centroid;
+	const Shape* shape;
 };
 
-struct BVHNode{
-	Bounds bound;
-	BVHNode* children[2];
-	size_t splitAxis, firstShape, nShapes;
+struct BVHNode {
+	Bound bound;
+	std::shared_ptr<BVHNode> children[2];
+	uint8_t splitAxis;
+	size_t firstShape, nShapes;
+
+	BVHNode() = default;
+	BVHNode(Bound newBound, size_t firstShape);
+	BVHNode(Bound newBound, size_t firstShape, size_t nShapes);
+	BVHNode(Bound newBound, std::shared_ptr<BVHNode> c0, std::shared_ptr<BVHNode> c1,
+		uint8_t axis, size_t firstShape, size_t nShapes);
+};
+
+// not cache optimized
+class BVH{
+	std::vector<ShapeBound> shapeBounds;
+	std::shared_ptr<BVHNode> root;
+
+	static constexpr int maxShapesInNode = 6;
+	std::shared_ptr<BVHNode> createNode(size_t start, size_t end);
+public:
+	BVH(const std::vector<Shape*>& shapeList);
+
+	bool findIntersection(
+		const Ray& ray,
+		float& t,
+		const Shape*& shapeptr) const;
 };

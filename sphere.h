@@ -12,7 +12,7 @@ public:
 		float m_r;
 		glm::vec3 m_pos;
 
-		Sphere(){ }
+		Sphere() : m_r(0.f), m_pos(glm::vec3(0.f)) { }
 
 		Sphere(float r,
 		       glm::vec3 pos,

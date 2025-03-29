@@ -11,11 +11,11 @@
 #include "ray.h"
 
 
-struct Scene {
+class Scene {
+public:
 	std::vector<Shape*> objects;
 	std::size_t firstLightIndex;
 
-	Scene(){}
 	Scene(std::initializer_list<Shape*> objList,
 		std::initializer_list<Shape*> lightList);
 
