@@ -29,8 +29,8 @@ struct Scene {
 
 	bool findIntersection(
 			const Ray& ray,
-			double& t,
+			float& t,
 			const Shape*& shapeptr) const;
 
-	bool visibility(const Ray& ray, double t) const;
+	bool visibility(const Ray& ray, float t) const;
 };
