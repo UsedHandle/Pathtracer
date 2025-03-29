@@ -6,23 +6,23 @@
 
 class Triangle : public Shape {
 public:
-	glm::dvec3 m_p1, m_p2, m_p3;
+	glm::vec3 m_p1, m_p2, m_p3;
 
-	glm::dvec3 m_norm;
+	glm::vec3 m_norm;
 	
 	Triangle(){ }
-	Triangle(glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
-	         glm::dvec3 col, glm::dvec3 emis);
+	Triangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3,
+	         glm::vec3 col, glm::vec3 emis);
 
 	Triangle(const Triangle& b) = default;
 	Triangle(Triangle&& b) noexcept = default;
 	Triangle& operator=(const Triangle& b) = default;
 	Triangle& operator=(Triangle&& b) noexcept = default;
 
-	glm::dvec3 normal(const glm::dvec3& point, const glm::dvec3& dir) const;
-	double intersect(const Ray& ray) const;
+	glm::vec3 normal(const glm::vec3& point, const glm::vec3& dir) const;
+	float intersect(const Ray& ray) const;
 	
-	[[nodiscard]] glm::dvec3
-	sampleSurface(Ray& ray, double& dist, double zeta1, double zeta2) const;
+	[[nodiscard]] glm::vec3
+	sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const;
 
 };

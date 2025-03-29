@@ -38,6 +38,6 @@ struct Sampler {
 		return static_cast<T>(rand_in_range) + min; 
 	}
  
-	[[nodiscard]] glm::dvec3 uniHemisphere();
-	[[nodiscard]] glm::dvec3 cosHemisphere();
+	[[nodiscard]] glm::vec3 uniHemisphere();
+	[[nodiscard]] glm::vec3 cosHemisphere();
 };
