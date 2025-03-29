@@ -4,7 +4,7 @@ For mac or linux:
 ```
 mkdir build
 cd build
-cmake ..
+cmake .. -D CMAKE_POLICY_VERSION_MINIMUM=3.5
 make
 ```
 On windows, ```make``` can be replaced with compilation through Visual Studio as cmake generates the sln file
