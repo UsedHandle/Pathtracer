@@ -11,5 +11,6 @@ struct BVH{
 
 struct BVHNode{
 	Bounds bound;
+	BVHNode* children[2];
 	size_t splitAxis, firstShape, nShapes;
 };

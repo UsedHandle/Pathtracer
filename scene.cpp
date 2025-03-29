@@ -14,9 +14,10 @@ Scene::Scene(std::initializer_list<Shape*> objList,
 }
 
 Scene::~Scene(){
+	/*
 	for(Shape* shape : objects){
 		delete shape;
-	}
+	}*/
 }
 
 bool Scene::findIntersection(

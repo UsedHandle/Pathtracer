@@ -19,6 +19,8 @@ using glm::vec2;
 
 #include "stb_image_write.h"
 
+#include "bounds.h"
+
 int main(int argc, char** argv) {
 	uint32_t numSamples = 200;
 	uint32_t numBounces = 2;
@@ -92,7 +94,7 @@ int main(int argc, char** argv) {
 		new Triangle(vec3( 50.,81.6-9.,81.6),vec3( 42.,81.6-9.,76.6),vec3( 42.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 		new Triangle(vec3( 50.,81.6-9.,76.6),vec3( 42.,81.6-9.,76.6),vec3( 50.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 	});
-
+	Bound box(glm::vec3(30.f, 10.f, 90.f), glm::vec3(60.f, 40.f, 110.f));
 	for(auto& Tri : model.m_triangles){
 		cornellBox.objects.insert(cornellBox.objects.begin()+cornellBox.firstLightIndex, &Tri);
 		std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
@@ -128,26 +130,28 @@ int main(int argc, char** argv) {
 				static_cast<float>((i+1)*pixels_width)/
 				static_cast<float>(pixels_width*pixels_height));
 	   
-		for(uint32_t j = 0; j < pixels_width; ++j){
+		for (uint32_t j = 0; j < pixels_width; ++j) {
 			vec2 uv = vec2(
-				float(j)/float(pixels_width-1),
-				1.0 - float(i)/float(pixels_height-1));
+				float(j) / float(pixels_width - 1),
+				1.0 - float(i) / float(pixels_height - 1));
 
-			uv = uv * 2.f*transVal - transVal;
+			uv = uv * 2.f * transVal - transVal;
 			uv.x *= aspect_ratio;
-			
+
 			ray.D = D;
-			ray.D +=  uv.y*Up;
-			ray.D += -uv.x*Left;
+			ray.D += uv.y * Up;
+			ray.D += -uv.x * Left;
 			ray.D = normalize(ray.D);
-			
+
 
 			vec3 col = vec3(0.f);
+
 			
 			for(uint32_t k = 0; k < numSamples; ++k)
 				col += tracer.radiance(ray, &cornellBox);
 
 			col *= 1.f/static_cast<float>(numSamples);
+			
 			
 			pixels[i][j] = toPixel(col);
 		}

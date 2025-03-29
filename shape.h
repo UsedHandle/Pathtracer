@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "ray.h"
+#include "bounds.h"
 
 class Shape {
 public:
@@ -19,6 +20,8 @@ public:
 	virtual ~Shape(){};
 	virtual glm::vec3 normal(const glm::vec3& point, const glm::vec3& dir) const = 0;
 	virtual float intersect(const Ray& ray) const = 0;
+
+	virtual Bound getBound() const = 0;
 	
 	[[nodiscard]] virtual glm::vec3
 	sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const = 0;

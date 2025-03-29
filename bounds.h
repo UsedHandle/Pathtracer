@@ -2,20 +2,23 @@
 
 #include <glm/glm.hpp>
 
+#include <algorithm>
+
+#include "ray.h"
+
 struct Bound {
 	glm::vec3 min, max;
-	Bound(glm::vec3 a) : min(a), max(b){}
+	Bound(glm::vec3 a) : min(a), max(a) {}
 	Bound(glm::vec3 a, glm::vec3 b)
-		: min(glm::vec3(std::min(a.x, b.x),std::min(a.y,b.y),
-		                std::min(a.z, b.z))),
-		  max(glm::vec3(std::max(a.x, b.x),std::max(a.y,b.y))){}
-	
+		: min(a), max(b) { }
 
 	Bound(const Bound& b) = default;
 	Bound(Bound&& b) noexcept = default;
 	Bound& operator=(const Bound& b) = default;
 	Bound& operator=(Bound&& b) noexcept = default;
-}
+
+	float intersect(const Ray& ray) const;
+};
 
 inline Bound Union(const Bound& a, const Bound& b){
 	return Bound(glm::vec3(std::min(a.min.x, b.min.x),

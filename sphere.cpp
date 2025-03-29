@@ -54,3 +54,7 @@ Sphere::sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const
 
 	return point;
 }
+
+Bound Sphere::getBound() const {
+	return Bound(m_pos - glm::vec3(m_r), m_pos + glm::vec3(m_r));
+}
