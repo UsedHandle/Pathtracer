@@ -107,7 +107,7 @@ bool BVH::findIntersection(
 		const std::shared_ptr<BVHNode> node = stack[stackIndex];
 		const float node_t = stack.at(stackIndex)->bound.intersect(ray);
 		// node hit
-		if (node_t < MAX_T ) {
+		if (node_t < t ) {
 			if (node->nShapes == 0) {
 				stack[stackIndex++] = node->children[0];
 				stack[stackIndex++] = node->children[1];

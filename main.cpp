@@ -102,8 +102,8 @@ int main(int argc, char** argv) {
 		/*new Sphere(600., vec3( 50.,681.6-.27,81.6), vec3(1.0),vec3(12.)) //Light */
 		/*new Sphere(5.,vec3( 50.,81.6-6.,81.6), vec3(1.0), vec3(12.)), //Light*/
 		/* Sphere(20.,vec3( 50.,51.6-6.,81.6), vec3(1.0), vec3(12.)) //Light */
-		new Triangle(vec3(50.,81.6 - 9.,81.6),vec3(42.,81.6 - 9.,76.6),vec3(42.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
-		new Triangle(vec3(50.,81.6 - 9.,76.6),vec3(42.,81.6 - 9.,76.6),vec3(50.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
+		new Triangle(vec3(54.,81.6 - 9.,81.6),vec3(46.,81.6 - 9.,76.6),vec3(46.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
+		new Triangle(vec3(54.,81.6 - 9.,76.6),vec3(46.,81.6 - 9.,76.6),vec3(54.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
 	};
 
 	Scene cornellBox(objectList, lightList);
@@ -164,7 +164,6 @@ int main(int argc, char** argv) {
 
 
 			pixels[i][j] = toPixel(col);
-			
 			/*
 			pixels[i][j] = toPixel(col);
 			float t;

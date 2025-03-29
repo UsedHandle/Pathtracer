@@ -17,5 +17,5 @@ float Bound::intersect(const Ray& ray) const {
 		// ray reenters slab
 		if (t0 > t1) return MAX_T;
 	}
-	return (t0) > MIN_T ? t0 : t1;
+	return (t0) > MIN_T ? t0 : MIN_T;
 }
