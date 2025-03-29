@@ -26,7 +26,6 @@ glm::vec3 Pathtracer::radiance(
 	}
 
 	emission[numBounces] = glm::vec3(0.0);
-	float brdf_pdf = 1.0;
 	for(uint32_t depth = 0; depth < numBounces+1; ++depth){
 		float t;
 		const Shape* obj;
@@ -51,7 +50,7 @@ glm::vec3 Pathtracer::radiance(
 
 		vec3 sample = sampler.cosHemisphere();
 
-		const float next_brdf_pdf = sample.z/PI;
+		const float brdf_pdf = sample.z/PI;
 
 		vec3 d = orthonormalMat * sample;
 		col[depth] = obj->m_col;
@@ -63,7 +62,6 @@ glm::vec3 Pathtracer::radiance(
 		
 		// no light edge case
 		if(scene->lights.size() == 0){
-			brdf_pdf = next_brdf_pdf;
 			break;
 		}
 
@@ -99,17 +97,15 @@ glm::vec3 Pathtracer::radiance(
 			direct[depth] =
 				BRDF * light * cosprod/R2  * 1.f/nee_pdfA;
 		}
-
-		brdf_pdf = next_brdf_pdf;
 	}
 	
-	vec3 light_out = emission[numBounces];
+	vec3 indirect = vec3(0.f);
 
 	// uint goes to its upper limit when it goes below 0
 	for(uint32_t i = numBounces-1; i < numBounces; --i){
-		light_out = (1.f-LiWeight[i])*emission[i] + LiWeight[i]*direct[i] + col[i]*light_out;
-		/*light_out = (emission[i] + col[i]*light_out);*/
+		indirect = col[i] * emission[i+1] * (1.f - LiWeight[i]) + direct[i] * LiWeight[i]
+			+ col[i] * (indirect);
 	}
 
-	return light_out;
+	return emission[0] + indirect;
 }
