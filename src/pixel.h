@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <algorithm>
 
 struct pixel {
     unsigned char r;
@@ -23,6 +24,15 @@ float luminance(const glm::vec3& col){
 }
 
 [[nodiscard]] inline
+glm::vec3 clamp(const glm::vec3& col) {
+    return glm::vec3(
+        std::clamp(col.x, 0.f, 1.f),
+        std::clamp(col.y, 0.f, 1.f),
+        std::clamp(col.z, 0.f, 1.f)
+    );
+}
+
+[[nodiscard]] inline
 glm::vec3 reinhardTMO(const glm::vec3& col){
     // this could also use the extended
     // version:
@@ -38,9 +48,22 @@ glm::vec3 reinhardTMO(const glm::vec3& col){
 }
 
 [[nodiscard]] inline
+// Krzysztof Narkowicz
+glm::vec3 ACES_approx(glm::vec3 col) {
+    col = col * 0.6f;
+    float a = 2.51f;
+    float b = 0.03f;
+    float c = 2.43f;
+    float d = 0.59f;
+    float e = 0.14f;
+    return clamp((col * (a * col + b)) / (col * (c * col + d) + e));
+}
+
+[[nodiscard]] inline
 pixel toPixel(glm::vec3 col){
     
-    col = reinhardTMO(col);
+    //col = reinhardTMO(col);
+    col = ACES_approx(col);
     col = srgbApprox(col);
     return pixel{
         static_cast<unsigned char>(col.x*255.0),

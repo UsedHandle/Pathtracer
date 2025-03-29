@@ -89,14 +89,21 @@ int main(int argc, char** argv) {
 		//std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
 	}
 
-
-
+	const float centerx = 50.f;
+	const float centerz = 79.1f;
+	const float width = 20.f;
+	const float height = 20.f;
+	const float minx = centerx - width/2.;
+	const float maxx = centerx + width/2.;
+	const float y    = 81.6f - 9;
+	const float minz = centerz - height/2.;
+	const float maxz = centerz + height/2.;
 	std::vector<Shape*> lightList = {
 		/*new Sphere(600., vec3( 50.,681.6-.27,81.6), vec3(1.0),vec3(12.)) //Light */
 		/*new Sphere(5.,vec3( 50.,81.6-6.,81.6), vec3(1.0), vec3(12.)), //Light*/
 		/* Sphere(20.,vec3( 50.,51.6-6.,81.6), vec3(1.0), vec3(12.)) //Light */
-		new Triangle(vec3(54.,81.6 - 9.,81.6),vec3(46.,81.6 - 9.,76.6),vec3(46.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
-		new Triangle(vec3(54.,81.6 - 9.,76.6),vec3(46.,81.6 - 9.,76.6),vec3(54.,81.6 - 9.,81.6), vec3(1.0), vec3(50.)), //Light
+		new Triangle(vec3(maxx,y,maxz),vec3(minx,y,minz),vec3(minx,y,maxz), vec3(1.0), vec3(50.)), //Light
+		new Triangle(vec3(maxx,y,minz),vec3(minx,y,minz),vec3(maxx,y,maxz), vec3(1.0), vec3(50.)), //Light
 	};
 
 	Scene cornellBox(objectList, lightList);
