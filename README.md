@@ -1,5 +1,5 @@
 # Pathtracer
-![Image of output](https://github.com/UsedHandle/Pathtracer/blob/postjan10/500spp.png?raw=true)
+![Image of output](https://github.com/UsedHandle/Pathtracer/blob/main/500spp.png?raw=true)
 ## build (CMake)
 For mac or linux:
 ```
