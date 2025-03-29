@@ -1,4 +1,5 @@
 # Pathtracer
+![Image of output](https://github.com/UsedHandle/Pathtracer/blob/postjan10/500spp.png?raw=true)
 ## build (CMake)
 For mac or linux:
 ```
@@ -9,8 +10,8 @@ make
 ```
 On windows, ```make``` can be replaced with compilation through Visual Studio as cmake generates the sln file
 ## usage
-for n samples per pixel and m bounces (default: 200 spp and 2 bounces)
+for n samples per pixel, m bounces, AxB image (default: 8 spp and 5 bounces at 1024x768)
 ```
-./better n m
+./better n m A B
 ```
 once it finishes rendering it outputs to ```outimage.png```
