@@ -10,13 +10,13 @@
 #include "bvh.h"
 
 class Scene {
-	BVH bvh;
 public:
+	BVH bvh;
 	std::vector<Shape*> objects;
 	std::vector<Shape*> lights;
 
-	Scene(const std::initializer_list<Shape*>& objList,
-		const std::initializer_list<Shape*>& lightList);
+	Scene(const std::vector<Shape*>& objList,
+		const std::vector<Shape*>& lightList);
 
 
 	Scene(const Scene& b) = default;
