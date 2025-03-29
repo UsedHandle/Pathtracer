@@ -101,8 +101,7 @@ int main(int argc, char** argv) {
 
 	Scene cornellBox(objectList, lightList);
 
-
-	std::vector<std::vector<pixel>> pixels(pixels_height, std::vector<pixel>(pixels_width));
+	std::vector<pixel> pixels(pixels_height * pixels_width);
 
 	// std::tan() is not constexpr
 	constexpr float FOV = 75.f;
@@ -156,7 +155,7 @@ int main(int argc, char** argv) {
 
 
 
-			pixels[i][j] = toPixel(col);
+			pixels[i*pixels_height +j] = toPixel(col);
 		}
 	}
   
@@ -168,6 +167,6 @@ int main(int argc, char** argv) {
 	
 	stbi_write_png("outimage.png",
 	               pixels_width, pixels_height, 3,
-	               &pixels.front(), pixels_width * sizeof(pixel));
+	               pixels.data(), pixels_width * sizeof(pixel));
 
 }
