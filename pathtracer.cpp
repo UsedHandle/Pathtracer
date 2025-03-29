@@ -61,6 +61,12 @@ glm::dvec3 Pathtracer::radiance(
 		Ray directRay(x, dvec3(0.0));
 		double directDist;
 		
+		// no light edge case
+		if(scene->firstLightIndex == scene->objects.size()){
+			brdf_pdf = next_brdf_pdf;
+			break;
+		}
+
 		std::size_t randLightIndex =
 			sampler.randInt(scene->firstLightIndex, scene->objects.size()-1);
 		const Shape* const sampleLight = scene->objects[randLightIndex];
@@ -74,14 +80,14 @@ glm::dvec3 Pathtracer::radiance(
 		const dvec3 pointNormal =
 			sampleLight->normal(point, directRay.D);
 		const double light_cos_theta = dot(pointNormal, -directRay.D);
-		const double surfaceArea	 =	sampleLight->m_area;
-		const double R2			 =	directDist*directDist;
-		const double nee_pdfA = 1./(surfaceArea);
-		const double nee_pdfw = R2/(light_cos_theta) * nee_pdfA;
+
 		// last check makes sure the pdf is not zero for example when a point is sampled
 		// on a triangle from the same triangle
 		if(scene->visibility( directRay, directDist ) && light_cos_theta > EPS){
-		   
+			const double surfaceArea	 =	sampleLight->m_area;
+			const double R2			 =	directDist*directDist;
+			const double nee_pdfA = 1./(surfaceArea);
+			const double nee_pdfw = R2/(light_cos_theta) * nee_pdfA;	   
 			const double cos_theta = std::abs(dot(directRay.D, w));
 
 			const dvec3 BRDF = obj->m_col/PI;
@@ -93,9 +99,6 @@ glm::dvec3 Pathtracer::radiance(
 
 			direct[depth] =
 				BRDF * light * cosprod/R2  * 1.0/nee_pdfA;
-		} else {
-			direct[depth] = dvec3(0.0);
-			LiWeight[depth] = 0.0;
 		}
 
 		brdf_pdf = next_brdf_pdf;
