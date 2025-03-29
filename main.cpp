@@ -2,17 +2,20 @@
 #include <cstdlib>
 #include <iterator>
 #include <iostream>
+#include <print>
 #include <chrono>
 #include <string>
 using std::chrono::high_resolution_clock;
 
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 using glm::vec3;
 using glm::vec2;
 
 #include "pixel.h"
 #include "pathtracer.h"
+#include "model.h"
 
 #include "stb_image_write.h"
 
@@ -52,7 +55,12 @@ int main(int argc, char** argv) {
 #endif
 
 	Pathtracer tracer(Sampler(1835), numBounces);
-	
+	glm::mat4 trans(1.0);
+	trans = glm::translate(trans, glm::vec3(50., 20., 100.));
+	trans = glm::rotate(trans, (float)PI/7.f, glm::vec3(0.,1.,0.));
+	trans = glm::scale(trans, glm::vec3(10.f));
+	Model model("box.glb", trans);
+
 	// eventually would get replaced with BVH with unique ptr
 	Scene cornellBox({
 		// smallpt scene except light with triangles instead of spheres
@@ -84,6 +92,12 @@ int main(int argc, char** argv) {
 		new Triangle(vec3( 50.,81.6-9.,81.6),vec3( 42.,81.6-9.,76.6),vec3( 42.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 		new Triangle(vec3( 50.,81.6-9.,76.6),vec3( 42.,81.6-9.,76.6),vec3( 50.,81.6-9.,81.6), vec3(1.0), vec3(50.)), //Light
 	});
+
+	for(auto& Tri : model.m_triangles){
+		cornellBox.objects.insert(cornellBox.objects.begin()+cornellBox.firstLightIndex, &Tri);
+		std::print("{} {} {}\n", Tri.m_p1.x, Tri.m_p1.y, Tri.m_p1.z);
+		cornellBox.firstLightIndex++;
+	}
 
 	pixel pixels[pixels_height][pixels_width];
 

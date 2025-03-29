@@ -1,10 +1,6 @@
 #include "sampler.h"
 #include "constants.h"
 
-Sampler& Sampler::operator=(const Sampler& b){
-	state=b.state;
-	return *this;
-}
 
 [[nodiscard]] float Sampler::uniform_dist(){
 	constexpr float INV_UINT32_MAX =

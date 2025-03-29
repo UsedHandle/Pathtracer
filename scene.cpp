@@ -2,7 +2,7 @@
 #include <cstdio>
 
 Scene::Scene(std::initializer_list<Shape*> objList,
-			 std::initializer_list<Shape*> lightList)
+             std::initializer_list<Shape*> lightList)
 	: objects(std::move(objList)),
 	  firstLightIndex(objList.size())
 {
