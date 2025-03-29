@@ -11,7 +11,7 @@ Triangle::Triangle(glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
 
 		glm::dvec3 edge1 = p2-p1;
 		glm::dvec3 edge2 = p3-p1;
-		m_area = glm::length(glm::cross(edge1, edge2)) * 0.5; // double facing
+		m_area = glm::length(glm::cross(edge1, edge2)) * 0.5;
 
 }
 
