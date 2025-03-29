@@ -9,26 +9,26 @@
 
 class Sphere : public Shape {
 public:
-		double m_r;
-		glm::dvec3 m_pos;
+		float m_r;
+		glm::vec3 m_pos;
 
 		Sphere(){ }
 
-		Sphere(double r,
-		       glm::dvec3 pos,
-		       glm::dvec3 col,
-		       glm::dvec3 emis);
+		Sphere(float r,
+		       glm::vec3 pos,
+		       glm::vec3 col,
+		       glm::vec3 emis);
 
 		Sphere(const Sphere& b) = default;
 		Sphere(Sphere&& b) noexcept = default;
 		Sphere& operator=(const Sphere& b) = default;
 		Sphere& operator=(Sphere&& b) noexcept = default;
 
-		glm::dvec3
-		normal(const glm::dvec3& point, const glm::dvec3& dir) const;
+		glm::vec3
+		normal(const glm::vec3& point, const glm::vec3& dir) const;
 
-		double intersect(const Ray& ray) const; 
+		float intersect(const Ray& ray) const; 
 		
-		[[nodiscard]] glm::dvec3
-		sampleSurface(Ray& ray, double& dist, double zeta1, double zeta2) const;
+		[[nodiscard]] glm::vec3
+		sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const;
 };
