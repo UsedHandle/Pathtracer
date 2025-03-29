@@ -31,7 +31,7 @@ FetchContent_MakeAvailable(assimp)
 #find_package(SDL2 REQUIRED)
 
 add_library(stb_image STATIC stb_image_write.c)
-add_executable(${EXE_NAME} main.cpp pathtracer.cpp ray.cpp sampler.cpp scene.cpp sphere.cpp triangle.cpp model.cpp)
+add_executable(${EXE_NAME} main.cpp pathtracer.cpp ray.cpp sampler.cpp scene.cpp sphere.cpp triangle.cpp model.cpp bounds.cpp)
 
 if(MSVC)
 	target_compile_options(${EXE_NAME} PRIVATE /W4)

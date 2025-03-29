@@ -27,8 +27,10 @@ public:
 		glm::vec3
 		normal(const glm::vec3& point, const glm::vec3& dir) const;
 
-		float intersect(const Ray& ray) const; 
+		float intersect(const Ray& ray) const;
 		
 		[[nodiscard]] glm::vec3
 		sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const;
+
+		Bound getBound() const;
 };

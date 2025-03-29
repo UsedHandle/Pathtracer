@@ -4,17 +4,9 @@
 glm::mat3 orthonormalZ(const glm::vec3& k){
 	using glm::vec3;
 
-	/* vec3 i = (std::abs(k.x)>EPS ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0)); */
 	vec3 i = vec3(k.z-1.1, k.x, k.y);
 	i = normalize(cross(i, k));
-	/* vec3 i = rotz * rotx * k; */
 	const vec3 j = cross(k, i);
-	/* if(dot(k, i) > 0.1){ */
-	/*	   printf("k:%lf %lf %lf\n", k.x, k.y, k.z); */
-	/*	   printf("i:%lf %lf %lf\n", i.x, i.y, i.z); */
-	/*	   printf("j:%lf %lf %lf\n", j.x, j.y, j.z); */
-	/*	   printf("\n"); */
-	/* } */
 	return glm::mat3(i, j, k);
 }
 

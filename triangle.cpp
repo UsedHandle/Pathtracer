@@ -85,3 +85,7 @@ Triangle::sampleSurface(Ray& ray, float& dist,
 		return point;
 }
 
+Bound Triangle::getBound() const {
+	return Union(Union(Bound(m_p1), Bound(m_p2)), Bound(m_p3));
+}
+

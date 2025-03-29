@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <concepts>
+#include <algorithm>
 
 #include <glm/glm.hpp>
 

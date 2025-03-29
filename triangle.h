@@ -25,4 +25,5 @@ public:
 	[[nodiscard]] glm::vec3
 	sampleSurface(Ray& ray, float& dist, float zeta1, float zeta2) const;
 
+	Bound getBound() const;
 };
