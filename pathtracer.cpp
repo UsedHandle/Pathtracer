@@ -94,7 +94,6 @@ glm::vec3 Pathtracer::radiance(
 			const vec3 light = sampleLight->m_emis;
 
 			LiWeight[depth] = (nee_pdfw*nee_pdfw)/(nee_pdfw*nee_pdfw + brdf_pdf*brdf_pdf);
-			/*printf("%lf %lf %lf %lf\n", R2, light_cos_theta, nee_pdfA, LiWeight[depth]);*/
 			const float cosprod = std::abs(cos_theta*light_cos_theta);
 
 			direct[depth] =
@@ -111,5 +110,6 @@ glm::vec3 Pathtracer::radiance(
 		light_out = (1.f-LiWeight[i])*emission[i] + LiWeight[i]*direct[i] + col[i]*light_out;
 		/*light_out = (emission[i] + col[i]*light_out);*/
 	}
+
 	return light_out;
 }
