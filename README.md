@@ -8,7 +8,8 @@ cd build
 cmake .. -D CMAKE_POLICY_VERSION_MINIMUM=3.5
 make
 ```
-On windows, ```make``` can be replaced with compilation through Visual Studio after setting better as the startup project usage (make sure assets is in the current directory)
+On windows, ```make``` can be replaced with compilation through Visual Studio after setting better as the startup project
+## usage (make sure assets is in the current directory)
 for n samples per pixel, m bounces, AxB image (default: 8 spp and 5 bounces at 1024x768)
 ```
 ./better n m A B
