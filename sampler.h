@@ -8,12 +8,14 @@
 #include "ray.h"
 
 struct Sampler {
-	uint32_t state;
+	uint32_t state{};
 	
-	Sampler(){ }
+	Sampler(){};
 	Sampler(uint32_t seed) : state(seed) {	}
-	Sampler(const Sampler& b) : state(b.state) {  }
-	Sampler& operator=(const Sampler& b);
+	Sampler(const Sampler& b) = default;
+	Sampler(Sampler&& b) noexcept = default;
+	Sampler& operator=(const Sampler& b) = default;
+	Sampler& operator=(Sampler&& b) noexcept = default;
 
 	inline void seed(uint32_t seed){ state=seed; }
 
