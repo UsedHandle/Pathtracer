@@ -11,7 +11,7 @@ Triangle::Triangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3,
 
 		glm::vec3 edge1 = p2-p1;
 		glm::vec3 edge2 = p3-p1;
-		m_area = glm::length(glm::cross(edge1, edge2)) * 0.5;
+		m_area = glm::length(glm::cross(edge1, edge2)) * 0.5f;
 
 }
 
@@ -40,27 +40,27 @@ float Triangle::intersect(const Ray& ray) const {
 
 		T = ray.O - m_p1;
 		float u = dot(T, P);
-		if(u < 0.0 || u > det)
+		if(u < 0.f || u > det)
 				return MAX_T;
 
 		Q = cross(T, edge1);
 		float v = dot(ray.D, Q);
-		if(v < 0.0 || u + v > det)
+		if(v < 0.f || u + v > det)
 				return MAX_T;
 
 		return dot(edge2, Q)/det;
 #else
 		if(det > -EPS && det < EPS)
 				return MAX_T;
-		float inv_det = 1.0/det;
+		float inv_det = 1.f/det;
 		T = ray.O - m_p1;
 		float u = dot(T, P) * inv_det;
-		if(u < 0.0 || u > 1.0)
+		if(u < 0.f || u > 1.f)
 				return MAX_T;
 
 		Q = cross(T, edge1);
 		float v = dot(ray.D, Q) * inv_det;
-		if(v < 0.0 || u + v > 1.0)
+		if(v < 0.f || u + v > 1.f)
 				return MAX_T;
 		
 		// det used to store t
@@ -72,13 +72,13 @@ float Triangle::intersect(const Ray& ray) const {
 Triangle::sampleSurface(Ray& ray, float& dist,
                         float zeta1, float zeta2) const {
 		const float t = std::sqrt(zeta1);
-		const float u = 1-t;
-		const float v = zeta2 * (1.-u);
-		const float w = t*(1.-zeta2);
+		const float u = 1.f-t;
+		const float v = zeta2 * (1.f-u);
+		const float w = t*(1.f-zeta2);
 
 		const glm::vec3 point = m_p1*u+
-		                         m_p2*v+
-		                         m_p3*w;
+		                        m_p2*v+
+		                        m_p3*w;
 		ray.D = point-ray.O;
 		dist = glm::length(ray.D);
 		ray.D = glm::normalize(ray.D);
