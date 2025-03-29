@@ -23,11 +23,11 @@ using glm::vec2;
 #include "sphere.h"
 
 int main(int argc, char** argv) {
-	uint32_t numSamples = 200;
-	uint32_t numBounces = 2;
+	uint32_t numSamples = 8;
+	uint32_t numBounces = 5;
 
-	uint32_t pixels_width = 256;
-	uint32_t pixels_height = 256;
+	uint32_t pixels_width = 1024;
+	uint32_t pixels_height = 768;
 
 	if(argc > 1){
 		int val = std::stoi(argv[1]);
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 
 
 
-			pixels[i*pixels_height +j] = toPixel(col);
+			pixels[i*pixels_width +j] = toPixel(col);
 		}
 	}
   
