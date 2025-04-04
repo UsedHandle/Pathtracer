@@ -18,15 +18,13 @@ Model::Model(std::string filename, glm::vec3 col,
 }
 
 void Model::processNode(aiNode *node, aiMatrix4x4 accumTrans){
-	accumTrans = node->mTransformation*accumTrans;
-	for(unsigned int i = 0; i < node->mNumChildren; i++)
-		processNode(node->mChildren[i], accumTrans);
+	for(unsigned int i = 0; i < node->mNumMeshes; i++)
+		m_meshes[node->mMeshes[i]].transform = assimpToglm(accumTrans);
 	
-	for(unsigned int i = 0; i < node->mNumMeshes; i++){
-		std::memcpy(&m_meshes[node->mMeshes[i]].transform[0][0],
-		       &accumTrans.Transpose(),
-		       sizeof(float)*16);
-	}
+	accumTrans = node->mTransformation * accumTrans;
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+		processNode(node->mChildren[i], accumTrans);
+
 }
 
 void Model::populateMeshesAndBuffers(const aiScene *scene,

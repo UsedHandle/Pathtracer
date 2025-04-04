@@ -33,6 +33,13 @@ struct Model {
 		                   b[0][3], b[1][3], b[2][3], b[3][3]);
 	}
 
+	static inline glm::mat4 assimpToglm(const aiMatrix4x4& b) {
+		return glm::mat4(b[0][0], b[1][0], b[2][0], b[3][0],
+		                 b[0][1], b[1][1], b[2][1], b[3][1],
+		                 b[0][2], b[1][2], b[2][2], b[3][2],
+		                 b[0][3], b[1][3], b[2][3], b[3][3]);
+	}
+
 	void processNode(aiNode* node, aiMatrix4x4 accumTrans = aiMatrix4x4());
 	void populateMeshesAndBuffers(const aiScene* scene, glm::vec3 col, glm::vec3 emis);
 };
